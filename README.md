@@ -1,3 +1,5 @@
+<img src="https://github.com/megacreativo/VestaCP-Extend/master/branding/logo.png" width="700" height="100"/>
+
 # 👋 Welcome to VestaCP Extend Tools
 
 This script was created to make life easier for those who work with **VestaCP** on a daily basis and want to update the **PHP version** or install **templates** for the proper functioning of frameworks such as: *Laravel, CodeIgniter and ReactJS*. There is also the option to enable SSL for the Dash **VestaCP** when sending emails with encryption.
@@ -5,13 +7,13 @@ This script was created to make life easier for those who work with **VestaCP** 
 
 🏠 [Homepage](https://github.com/megacreativo/VestaCP-Extend)
 
-## Prerequisites
+## 📋 Prerequisites
 - VestaCP 0.9.8
 - CentOS 6/7/8
 - Ubuntu server 14.04/16.04/18.04
 - Debian 7/8
 
-## Installing
+## 🔧 Installing
 
 ```sh
 wget 'https://github.com/megacreativo/VestaCP-Extend/master/install.sh' && sh install.sh
@@ -24,8 +26,11 @@ Feel free to check [issues page](https://github.com/megacreativo/VestaCP-Extend/
 
 ## 👤 Author
 
-**Brayan Rincón**
-- Github: [@brayan2rincon](https://github.com/brayan2rincon)
+- **Brayan Rincón** [@brayan2rincon](https://github.com/brayan2rincon) - Initial Work
+
+## 📌 Versioned 
+
+We use [SemVer](http://semver.org/) for versioning. For all available versions, look at the [tags in this repository](https://github.com/tu/proyecto/tags).
 
 ## 📝 License
 The software is distributed under the [MIT](https://github.com/megacreativo/VestaCP-Extend/blob/master/LICENSE) license.
