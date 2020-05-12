@@ -1,0 +1,237 @@
+<div class="l-center">
+    <div class="l-sort clearfix">
+        <div class="l-sort-toolbar clearfix float-left">
+            <span class="title"><b><?=__('Automatic Wordpress Installer')?></b></span>
+            <?php
+                    if (!empty($_SESSION['error_msg'])) {
+                      echo "<span class=\"vst-error\"> → ".htmlentities($_SESSION['error_msg'])."</span>";
+                    } else {
+                      if (!empty($_SESSION['ok_msg'])) {
+                        echo "<span class=\"vst-ok\"> → ".$_SESSION['ok_msg']."</span>";
+                      }
+                    }
+            ?>
+        </div>
+    </div>
+</div>
+
+<div class="l-separator"></div>
+<!-- /.l-separator -->
+
+<div class="l-center">
+
+
+    <form id="vstobjects" name="v_install_wp" id="v_install_wp" method="post">
+        <input type="hidden" name="token" value="<?=$_SESSION['token']?>" />
+        <input type="hidden" name="ok" value="Add" />
+
+        <table class="data mode-add">
+            <tr class="data-add">
+                <td class="data-dotted">
+                    <table class="data-col1">
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="data-dotted">
+                    <table class="data-col2" width="600px">
+                        <tr>
+                            <td class="step-top hint" style="color:#777;">
+                                <?php print __('Please enter below details for your wordpress installation. Note: This can take upto 5 mins.');?>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Select Domain');?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select class="vst-list" name="v_domain">
+                                    <?php foreach($data as $dm=>$key){ echo '<option value="'.$dm.'">'.$dm.'</option>';} ?>
+                                </select>
+                            </td>
+                        <tr>
+
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Installation Path');
+
+                                    echo "&nbsp;&nbsp;<em><small>(".__('Enter Path for Wordpress Installation. Default it will install in root directory', 16).")</small></em>";
+                                    ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" size="20" class="vst-input" name="v_path" value="/">
+                                <small class="hint"></small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php
+                                        print __('Wordpress Admin Username');
+                                        echo "&nbsp;&nbsp;<em><small>(".__('autogenrated username is recommended', 16).")</small></em>";
+                                    ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" size="20" class="vst-input" name="v_admin_user"
+                                    value="<?php echo "adminx".$user ;?>">
+                                <small class="hint"></small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('WordPress Admin Password');?> / <a href="javascript:randomString();"
+                                    class="generate"><?php print __('generate');?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" size="20" class="vst-input password" name="v_admin_passwd">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Blog Title');?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" size="20" class="vst-input" name="v_blog_title"
+                                    value="My Wordpress Blog">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Admin Email');?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" size="20" class="vst-input" name="v_admin_email"
+                                    value="<?php echo  $panel[$user]['CONTACT'];?>">
+                                <small class="hint"></small>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Admin First Name');?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" size="20" class="vst-input" name="v_admin_fname"
+                                    value="<?php echo  $panel[$user]['FNAME'];?>">
+                                <small class="hint"></small>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Admin Last Name');?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" size="20" class="vst-input" name="v_admin_lname"
+                                    value="<?php echo  $panel[$user]['LNAME'];?>">
+                                <small class="hint"></small>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Choose HTTP/HTTPS');
+                                echo "&nbsp;&nbsp;<em><small>(".__('make sure for https ssl is installed already', 16).")</small></em>";
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select class="vst-list" name="v_http">
+                                    <option value="http" selected>HTTP</option>
+                                    <option value="https">HTTPS</option>
+                                </select>
+                            </td>
+                        <tr>
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Choose WWW/non-WWW');?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select class="vst-list" name="v_www">
+                                    <option value="www" selected>WWW</option>
+                                    <option value="">non-WWW</option>
+                                </select>
+                            </td>
+                        <tr>
+                            <td class="vst-text input-label">
+                                <?php print __('Send login credentials to email address') ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" class="vst-input" name="v_send_email"
+                                    value="<?php echo  $panel[$user]['CONTACT'];?>">
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="data-col2">
+                        <tr>
+                            <td class="step-top" width="116px">
+                                <input type="submit" name="ok" value="<?=__('Install')?>" class="button">
+                            </td>
+                            <td class="step-top">
+                                <input type="button" id="resetBtn" class="button cancel" value="<?=__('Reset');?>">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+
+
+<div id="vstobjects">
+    <div class="l-separator"></div>
+    <div class="l-center">
+        <div class="l-unit-ft">
+            <div class="l-unit__col l-unit__col--left clearfix"></div>
+            <div class="data-count l-unit__col l-unit__col--right clearfix">
+                <p>This WordPress Installing Tools is in Development. Developed by Maskoid.Com</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    randomString = function () {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+        var string_length = 10;
+        var randomstring = '';
+        for (var i = 0; i < string_length; i++) {
+            var rnum = Math.floor(Math.random() * chars.length);
+            randomstring += chars.substr(rnum, 1);
+        }
+        document.v_install_wp.v_admin_passwd.value = randomstring;
+    }
+
+    function resetForm() {
+        document.getElementById("v_install_wp").reset();
+    }
+
+    document.getElementById("resetBtn").onclick = function () {
+        resetForm();
+    }
+</script>
