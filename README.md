@@ -2,10 +2,10 @@
 
 # 👋 Welcome to VestaCP Extend Tools
 
-This script was created to make life easier for those who work with **VestaCP** on a daily basis and want to update the **PHP version** or install **templates** for the proper functioning of frameworks such as: *Laravel, CodeIgniter and ReactJS*. There is also the option to enable SSL for the Dash **VestaCP** when sending emails with encryption.
+This script was created to make life easier for those who work with **VestaCP** on a daily basis and want to update the **PHP version** or install **templates** for the proper functioning of frameworks such as: *Laravel*. There is also the option to enable SSL for the Dash **VestaCP** when sending emails with encryption.
 
 
-🏠 [Homepage](https://github.com/megacreativo/VestaCP-Extend)
+## 🏠 [Homepage](https://github.com/megacreativo/VestaCP-Extend)
 
 ## 📋 Prerequisites
 - VestaCP 0.9.8
@@ -16,7 +16,7 @@ This script was created to make life easier for those who work with **VestaCP** 
 ## 🔧 Installing
 
 ```sh
-wget 'https://github.com/megacreativo/VestaCP-Extend/master/install.sh' && sh install.sh
+wget https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/master/vcpe-install.sh && sh vcpe-install.sh
 ```
 
 ## 🤝 Contributing

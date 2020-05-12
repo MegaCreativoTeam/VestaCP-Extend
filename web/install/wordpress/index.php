@@ -65,7 +65,6 @@ if (!empty($_POST['ok'])) {
     }
 
     // Install WordPress
-
     if (empty($_SESSION['error_msg'])) {
         // assign input to variable
         $domain = escapeshellarg($_POST['v_domain']);
@@ -79,11 +78,10 @@ if (!empty($_POST['ok'])) {
         $https = escapeshellarg($_POST['v_http']);
         $www = escapeshellarg($_POST['v_www']);
         $send_email = escapeshellarg($_POST['v_send_email']);
-        // Setting Blog URL
         
         exec (VESTA_CMD."v-install-wordpress ".$user." ".$domain." ".$path." ".$admin_user." ".$admin_passwd." ".$admin_email." ".$blog_title." ".$fname." ".$lname." ".$https." ".$www." ".$blog_url, $output, $return_var);
        
-        echo "<pre>"; 
+        /*echo "<pre>"; 
             if ($ret == 0) {                // check status code. if successful 
                 foreach ($output as $line) {  // process array line by line 
                     echo "$line \n"; 
@@ -92,27 +90,35 @@ if (!empty($_POST['ok'])) {
                 echo "Error in command";    // if unsuccessful display error 
             } 
             echo $ok_message;
-        echo "</pre>"; 
+        echo "</pre>"; */
 
         check_return_code($return_var,$output);
         unset($output);
         unlink($v_password);
 
-        if ($_POST['v_www'] == 'www')
-        {
-                $blog_url = "{$_POST['v_http']}://www.{$_POST['v_domain']}{$_POST['v_path']}";
-                $ok_message = "WordPress Installed-SUCCESS. <a href={$blog_url} target=\"_blank\"> Click To Visit:-> {$blog_title} </a>";
-
-            } else {
-                
-                $blog_url = "{$_POST['v_http']}://{$_POST['v_domain']}{$_POST['v_path']}";
-                $ok_message = "WordPress Installed-SUCCESS. <a href={$blog_url} target=\"_blank\"> Click To Visit:-> {$blog_title} </a>";
-
-            }
-           
-            $_SESSION['ok_msg'] = $ok_message;
-
+        if ($_POST['v_www'] == 'www') {
+            $blog_url = "{$_POST['v_http']}://www.{$_POST['v_domain']}{$_POST['v_path']}";
+            $ok_message = "WordPress installed success. <a href=\"{$blog_url}\" target=\"blank\"> Visit</a>";
         }
+        else {            
+            $blog_url = "{$_POST['v_http']}://{$_POST['v_domain']}{$_POST['v_path']}";
+            $ok_message = "WordPress installed success. <a href=\"{$blog_url}\" target=\"blank\"> Visit</a>";
+        }
+        
+        $wp_install_logs = '<div class"card">';
+        $wp_install_logs .= '    <div class="card-header"><strong>'.__('Your new WordPress site has been successfully set up at').'</strong></div>';
+        $wp_install_logs .= '    <div class="card-body">';
+        $wp_install_logs .= '       <strong>Site:</strong><a href="'.$blog_url.'/wp-login.php" target="blank">'.$blog_url . '</a><br/>';
+        $wp_install_logs .= '       <strong>Log in here:</strong> <a href="'.$blog_url.'/wp-login.php" target="blank">'.$blog_url.'/wp-login.php</a><br/>';
+        $wp_install_logs .= '       <strong>E-mail:</strong> ' . str_replace("'",'',$admin_email) . '<br/>';
+        $wp_install_logs .= '       <strong>Username:</strong> ' . str_replace("'",'',$admin_user) . '<br/>';
+        $wp_install_logs .= '       <strong>Password:</strong> ' . str_replace("'",'',$admin_passwd) . '<br/>';
+        $wp_install_logs .= '   </div>';
+        $wp_install_logs .= '</div>';
+        $_SESSION['ok_msg'] = $ok_message;
+        $_SESSION['wp_install_logs'] = $wp_install_logs;
+
+    }
 
 /* This module currently not required because WP-CLI installation send confirmation email but without password.
     // Email login credentials
@@ -147,7 +153,7 @@ render_page($user, $TAB, 'install_wp');
 // Flush session messages
 unset($_SESSION['error_msg']);
 unset($_SESSION['ok_msg']);
-
+unset($_SESSION['wp_install_logs']);
 
 // Back uri
 $_SESSION['back'] = $_SERVER['REQUEST_URI'];

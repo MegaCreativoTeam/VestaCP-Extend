@@ -35,26 +35,19 @@
 
 
 h1() {
-    echo -e "\e[1m\e[34m$1\e[0m"
+    echo "\e[1m\e[34m$1\e[0m"
 }
 
 h2() {
-    echo -e "\n\e[21m\e[94m$1\e[0m"
+    echo "\n\e[21m\e[94m$1\e[0m"
 }
 
 success() {
-    echo -e "\e[42m\e[4m[Done]\e[0m $1"
+    echo "\e[42m\e[4m[Done]\e[0m $1"
 }
 
 failed() {
-    echo -e "\e[41m\e[4m[Fail]\e[0m $1"
-}
-
-
-passwordgen() {
-    l=$1
-    [ "$l" == "" ] && l=15
-    tr -dc A-Za-z0-9 < /dev/urandom | head -c ${l} | xargs
+    echo "\e[41m\e[4m[Fail]\e[0m $1"
 }
 
 #----------------------------------------------------------#
@@ -85,12 +78,12 @@ wp="/usr/local/vesta/bin/wp"
 
 ## Check if users exists ##
 if [ ! -d "/home/$user" ]; then
-    failed "User doesn't exist";
+    echo "User doesn't exist";
     exit 1;
 fi
 ## Check if domain exists ##
 if [ ! -d "/home/$user/web/$domain/public_html" ]; then
-    failed "Domain doesn't exist";
+    echo "Domain doesn't exist";
     exit 1;
 fi
 
@@ -107,7 +100,7 @@ else
         if [ $FILECOUNT == "2" ] && [ $DIRCOUNT == "1" ]; then
             rm -rf $WORKINGDIR/*
         else
-            failed " $WORKINGDIR is not empty ";
+            echo " $WORKINGDIR is not empty ";
             exit 1;
         fi
     fi
@@ -116,7 +109,7 @@ fi
 # Check if WP-CLI is Installed
 
 if [ ! -f $wp ]; then
-    failed "WP-CLI not found. First Install WP-CLI";
+    echo "WP-CLI not found. First Install WP-CLI";
     exit 1;
 fi
 
@@ -128,9 +121,9 @@ cd $WORKINGDIR
 
 echo $WORKINGDIR
 
-echo h2 "###################################################################"
-echo h2 " We are installing Wordpress ...."
-echo h2 "###################################################################"
+echo "###################################################################"
+echo " We are installing Wordpress ...."
+echo "###################################################################"
 echo $WORKINGDIR
 ### Blog URL ###
 
@@ -157,15 +150,16 @@ done
 
 #Generating Database Password
 dbpassword=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10)
+
 #Creating Database and DB User
 dbinstallresult=$(/usr/bin/sudo /usr/local/vesta/bin/v-add-database $user $dbname $dbname $dbpassword)
 
 if [ -z "$dbinstallresult" ]
 then
-      success "Database Created Successfully"
+    echo "Database Created Successfully"
 else
-      echo "$dbinstallresult"
-      exit 1;
+    echo "$dbinstallresult"
+    exit 1;
 fi
 
 
@@ -174,36 +168,31 @@ dbname=$dbuser
 
 ### Install Wordpress ###
 echo $WORKINGDIR
-sudo -H -u $user $wp core download
+sudo -H -u $user $wp core download --allow-root --locale=es_VE
 sudo -H -u $user $wp config create --dbname=$dbname --dbuser=$dbuser --dbpass=$dbpassword --dbhost='localhost' --dbprefix='wpxyz_'
 sudo -H -u $user $wp core install --url="$blog_url" --title="$blog_title" --admin_user="$admin_user" --admin_password="$admin_passwd" --admin_email="$admin_email"
 sudo -H -u $user $wp user update "$admin_user" --first_name="$fname" --last_name="$lname" --display_name="Admin"
 sudo -H -u $user $wp plugin delete hello
-#sudo -H -u $user $wp theme delete twentyseventeen twentysixteen
+sudo -H -u $user $wp theme delete twentyseventeen twentysixteen
 #sudo -H -u $user $wp rewrite structure '/%category%/%postname%/'
 #sudo -H -u $user $wp option update timezone_string "Asia/Kolkata"
 #sudo -H -u $user $wp option update blogdescription ""
-#sudo -H -u $user $wp plugin install akismet edit-author-slug classic-editor password-protected seo-by-rank-math contact-form-7 wp-revisions-control --activate
+sudo -H -u $user $wp plugin install edit-author-slug classic-editor --activate
 #sudo -H -u $user $wp option update wordpress_api_key "b306c1b3ccd3"
 #sudo -H -u $user $wp post delete 1
 #sudo -H -u $user $wp post delete $(wp post list --post_type='page' --format=ids)
 
-h2 "###################################################################"
-h2 "Your New WordPress Site is Ready!!"
-h2 "###################################################################"
-echo -e " "
-echo -e "Your new WordPress site has been successfully set up at:"
-echo -e " "
-echo -e $blog_url
-echo -e " "
-echo -e "You can log in to the administrator account with the following information:"
-echo -e " "
-echo -e "Username: "$admin_user
-echo -e "Password: "$admin_passwd
-echo -e "Log in here: "$blog_url"wp-login.php"
-echo -e " "
-echo -e "We hope you enjoy your new site. Thanks!"
-echo -e " "
+clear
+echo "##############################################"
+echo "Your New WordPress Site is Ready!"
+echo "##############################################"
+echo " "
+echo "Your new WordPress site has been successfully set up at:"
+echo " "
+echo $blog_url
+echo "Log in here: "$blog_url"wp-login.php"
+echo "Username: "$admin_user
+echo "Password: "$admin_passwd
 ### Setup .htaccess and robots.txt file ###
 
 sudo -H -u $user curl -O https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/master/resources/wordpress/robots.txt

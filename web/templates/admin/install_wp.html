@@ -1,15 +1,15 @@
 <div class="l-center">
     <div class="l-sort clearfix">
         <div class="l-sort-toolbar clearfix float-left">
-            <span class="title"><b><?=__('Automatic Wordpress Installer')?></b></span>
+            <span class="title"><b><?=__('Wordpress Installer')?></b></span>
             <?php
-                    if (!empty($_SESSION['error_msg'])) {
-                      echo "<span class=\"vst-error\"> → ".htmlentities($_SESSION['error_msg'])."</span>";
-                    } else {
-                      if (!empty($_SESSION['ok_msg'])) {
+                if (!empty($_SESSION['error_msg'])) {
+                    echo "<span class=\"vst-error\"> → ".htmlentities($_SESSION['error_msg'])."</span>";
+                } else {
+                    if (!empty($_SESSION['ok_msg'])) {
                         echo "<span class=\"vst-ok\"> → ".$_SESSION['ok_msg']."</span>";
-                      }
                     }
+                }
             ?>
         </div>
     </div>
@@ -18,9 +18,9 @@
 <div class="l-separator"></div>
 <!-- /.l-separator -->
 
+
 <div class="l-center">
-
-
+    
     <form id="vstobjects" name="v_install_wp" id="v_install_wp" method="post">
         <input type="hidden" name="token" value="<?=$_SESSION['token']?>" />
         <input type="hidden" name="ok" value="Add" />
@@ -38,10 +38,16 @@
                     <table class="data-col2" width="600px">
                         <tr>
                             <td class="step-top hint" style="color:#777;">
-                                <?php print __('Please enter below details for your wordpress installation. Note: This can take upto 5 mins.');?>
+                                <?php
+                                    if (empty($_SESSION['wp_install_logs'])) {
+                                        print __('Please enter below details for your wordpress installation. Note: This can take upto 5 mins.');
+                                    }
+                                    else {                                        
+                                        echo $_SESSION['wp_install_logs'];                                    
+                                    }
+                                ?>                            
                             </td>
                         </tr>
-
 
                         <tr>
                             <td class="vst-text input-label">
@@ -209,7 +215,7 @@
         <div class="l-unit-ft">
             <div class="l-unit__col l-unit__col--left clearfix"></div>
             <div class="data-count l-unit__col l-unit__col--right clearfix">
-                <p>This WordPress Installing Tools is in Development. Developed by Maskoid.Com</p>
+                <p>Copyright © 2020. Made with ❤️ by Brayan Rincon and Mega Creativo</p>
             </div>
         </div>
     </div>

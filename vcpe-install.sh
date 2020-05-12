@@ -27,24 +27,24 @@
 #  - Debian 7/8
 #  - 32bit and 64bit
 
-INSTALLER_VERSION="master"
+INSTALLER_VERSION="1.0.0"
 INSTALLER_NAME="VestaCP-Extend-$INSTALLER_VERSION"
-INSTALLER_LARGENAME="VCP-Extends v{$INSTALLER_VERSION} | VestaCP Extends"
+INSTALLER_LARGENAME="VCP-Extends v$INSTALLER_VERSION | VestaCP Extends Tools"
 
 h1() {
-    echo -e "\e[1m\e[34m$1\e[0m"
+    echo "\e[1m\e[34m$1\e[0m"
 }
 
 h2() {
-    echo -e "\n\e[21m\e[94m$1\e[0m"
+    echo "\n\e[21m\e[94m$1\e[0m"
 }
 
 success() {
-    echo -e "\e[42m\e[4m[Done]\e[0m $1"
+    echo "\e[42m\e[4m[Done]\e[0m $1"
 }
 
 failed() {
-    echo -e "\e[41m\e[4m[Fail]\e[0m $1"
+    echo -"\e[41m\e[4m[Fail]\e[0m $1"
 }
 
 
@@ -68,9 +68,9 @@ welcome(){
     h1 " \ \ / / |   | |_) |____|  _|  \  /  | | |  _| |  \| | | | \ "
     h1 "  \ V /| |___|  __/_____| |___ /  \  | | | |___| |\  | |_| | "
     h1 "   \_/  \____|_|        |_____/_/\_\ |_| |_____|_| \_|____/  "
-    h1 "                                 $INSTALLER_LARGENAME "
-    echo "VestaCP functionality extension"
     echo ""
+	echo $INSTALLER_LARGENAME
+	echo "VestaCP functionality extension"
     echo "Copyright © 2020. Powered By Mega Creativo <http://megacreativo.com>"
     echo ""
 }
@@ -81,20 +81,20 @@ welcome(){
 ### Menu
 #####################################################
 menu(){
-	h2 '==================================================='
-	h2 '      Welcome to VCP-Extends | VestaCP Extends     '
-	h2 '==================================================='
-	echo ' 1 -> Update to php7.4 (Debian Based)'
-	echo ' 2 -> Install SSL for VestaCP Dashboard and Email'
-	echo ' 3 -> Actiavte File Manager'
-	echo ' 4 -> Installs Templates for Laravel, ReactJS and HTTPS'
-	#echo ' 5 -> Fix config and storage in phpMyAdmin'
-	echo ' 6 -> All options'
-	echo ' 0 -> Exit'
+	h2 "Welcome to $INSTALLER_LARGENAME"
+	echo " A) All options"
 
-	### Aguardando Input do Usuário
-	### Aguardando a opção ser selecionada
-	read -p 'Choose the option and press [ENTER]: ' OPTION
+	echo " 1) Update to php 7.4 (Debian/Ubunutu Based)"
+	echo " 2) Install SSL for VestaCP Dashboard and Email"
+	echo " 3) Activate File Manager"
+	echo " 4) Installs Templates for Laravel, ReactJS and HTTPS"
+	#echo " 5) Fix config and storage in phpMyAdmin"
+	echo " 6) Install WordPress"
+	
+	echo ""
+	echo " 0) Exit"
+
+	read -p "Choose the option and press [ENTER]: " OPTION_MENU
 }
 
 
@@ -102,7 +102,7 @@ menu(){
 ### Update to php7.4 (Debian Based)
 #####################################################
 update_php(){
-	h2 "Update to php7.4 (Debian Based)"
+	h2 "Update to php 7.4 (Debian Based)"
 	
 	# Update system
 	sudo apt update
@@ -127,7 +127,7 @@ update_php(){
 	# Reiniciando Apache
 	sudo service apache2 restart
 
-	success "Updated to php7.4"
+	success "Updated to php 7.4"
 }
 
 
@@ -136,8 +136,8 @@ update_php(){
 #####################################################
 install_ssl_to_panel(){
 	h2 "Starting SSL Installation "
-	sleep 1
 
+	HOSTNAME=$(hostname)
 	echo "Issuing SSL Certificate to the VestaCP Panel"
 	/usr/local/vesta/bin/v-add-letsencrypt-domain 'admin' $HOSTNAME '' 'yes'
 
@@ -147,7 +147,7 @@ install_ssl_to_panel(){
 	echo "This will allow VestaCP to update SSL for VestaCP, Exim and dovecot daemons every time SSL is renewed"
 	echo "UPDATE_HOSTNAME_SSL='yes'" >> /usr/local/vesta/conf/vesta.conf
 
-	sleep 3
+	sleep 1
 	sucess "SSL Enabled for the Panel Successfully!"
 }
 
@@ -157,55 +157,53 @@ install_ssl_to_panel(){
 #####################################################
 activate_filemanager(){
 	h2 "Starting FileManager Activation..."
-	sleep 0.4
 
-	### Variáveis
 	CHEKING_VESTA_FILEMANAGER="/etc/cron.hourly/vesta_filemanager"
-	FILE_EMP="FILEMANAGER_KEY=''"
-	FILE_TEXT="FILEMANAGER_KEY='ILOVEREO'"
+	FILEMANAGER_DISABLED="FILEMANAGER_KEY=''"
+	FILEMANAGER_ENABLED="FILEMANAGER_KEY='ILOVEREO'"
+
 
 	create_shell_activate_filemanager(){
 		echo '
-		#! /bin/bash
+		#!/bin/bash
 		#  Author: Brayan Rincon <brayan262@gmail.com>
 		#  Created: 11/05/2020
 		#  Last updated: 11/05/2020
 		#  Version: 1.0.0
 
-		disabled="'${FILE_EMP}'"
-		enabled="'${FILE_TEXT}'"
+		DISABLED="'${FILEMANAGER_DISABLED}'"
+		ENABLED="'${FILEMANAGER_ENABLED}'"
 
-		# Checking if FileManager is already active
-		if ! grep -Fxq "$enabled" /usr/local/vesta/conf/vesta.conf; then
+		f ! grep -Fxq "$ENABLED" /usr/local/vesta/conf/vesta.conf; then
 			# If it is not active it checks if it has a line but it is not activated
 
 			# Checking if the disabled variable is the same in the file
-			if grep -Fxq "$disabled" /usr/local/vesta/conf/vesta.conf
+			if grep -Fxq "$DISABLED" /usr/local/vesta/conf/vesta.conf
 			then
 				# Found TAG
-				sed -i -e "s/$disabled/$enabled/g" /usr/local/vesta/conf/vesta.conf
+				sed -i -e "s/$DISABLED/$ENABLED/g" /usr/local/vesta/conf/vesta.conf
 			else
 				# If there is no enabled or disabled line it activates
-				echo $enabled >> /usr/local/vesta/conf/vesta.conf
+				echo $ENABLED >> /usr/local/vesta/conf/vesta.conf
 			fi
 		fi' >> $CHEKING_VESTA_FILEMANAGER
 		chmod +x $CHEKING_VESTA_FILEMANAGER
-		sudo echo "Enabling FileManager..."
+		sudo echo "Enabling File Manager..."
 
 		# Verifying and Updating file sudoers
 		TEXT_FOR_SUDOERS='admin  ALL=(ALL) NOPASSWD: ALL'
 		SUDOERS='/etc/sudoers'
 
 		if ! grep -Fxq "$TEXT_FOR_SUDOERS" $SUDOERS; then
-			echo $TEXT_FOR_SUDOERS >> $SUDOERS
+			#echo $TEXT_FOR_SUDOERS >> $SUDOERS
+			echo ''
 		fi
 
-		### Adicionando tarefa para o admin ativar o FileManager
+		### Adding task for the admin to activate FileManager
 		/usr/local/vesta/bin/v-add-cron-job admin "*/2" "*" "*" "*" "*" "sudo /bin/bash /etc/cron.hourly/vesta_filemanager"
 		bash $CHEKING_VESTA_FILEMANAGER
-		sleep 2
 
-		sucess "FileManager Ativado com Sucesso!"
+		success "FileManager Successfully Activated!"
 	}
 
 	# Checks whether it is a reboot or a new installation
@@ -238,6 +236,7 @@ install_templates(){
 #####################################################
 phpMyAdmin_Fixer(){
 	# bash <(curl -s https://raw.githubusercontent.com/luizjr/phpMyAdmin-Fixer-VestaCP/master/pma.sh)
+	echo ''
 }
 
 
@@ -245,7 +244,7 @@ phpMyAdmin_Fixer(){
 ### Install WwordPress
 #####################################################
 install_wordpress(){
-	
+	h2 "Install WordPress"
 	WPCLI=/usr/local/vesta/bin/wp
 
 	# Check if WP CLI is Installed // Install WP CLI
@@ -269,7 +268,6 @@ install_wordpress(){
 		success "WP-CLI installed succefully."
 	fi
 
-
 	cd /usr/local/vesta/bin
 	curl -O https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/master/bin/v-install-wordpress
 	chmod 755 v-install-wordpress
@@ -285,14 +283,16 @@ install_wordpress(){
     if grep -q "WordPress" /usr/local/vesta/web/templates/admin/panel.html; then
         success "VestaCP WordPress it already exists"
     else 
-        sed -i '/<div class="l-menu clearfix noselect">/a <div class="l-menu__item <?php if($TAB == "WordPress" ) echo "l-menu__item--active"; ?>"><a href="/install/wordpress/"><?=__("WordPress")?></a></div>' /usr/local/vesta/web/templates/admin/panel.html;
+		LINK="		<div class=\"l-menu__item <?php if($TAB == 'WordPress' ) echo 'l-menu__item--active'; ?>\"><a href=\"/install/wordpress/\"><?=__(\"WordPress\")?></a></div>"
+        sed -i "/<div class=\"l-menu clearfix noselect\">/a $LINK" /usr/local/vesta/web/templates/admin/panel.html;
     fi
 
 	# Add to Navigation Normal User
     if grep -q "WordPress" /usr/local/vesta/web/templates/user/panel.html; then
         success "VestaCP WordPress it already exists"
     else 
-        sed -i '/<div class="l-menu clearfix noselect">/a <div class="l-menu__item <?php if($TAB == "WordPress" ) echo "l-menu__item--active"; ?>"><a href="/install/wordpress/"><?=__("WordPress")?></a></div>' /usr/local/vesta/web/templates/admin/panel.html;
+		LINK="		<div class=\"l-menu__item <?php if($TAB == 'WordPress' ) echo 'l-menu__item--active'; ?>\"><a href=\"/install/wordpress/\"><?=__(\"WordPress\")?></a></div>"
+        sed -i "/<div class=\"l-menu clearfix\">/a $LINK" /usr/local/vesta/web/templates/user/panel.html;
     fi
 
 	success "VestaCP Wordpress Application Installer is SUCCESSFULLY INSTALLED/UPDATED"
@@ -304,59 +304,47 @@ install_wordpress(){
 ### Options
 #####################################################
 options(){
-	### Verifica a opção selecionada no menu
-	if [[ -n "$OPTION" ]]; then
+	# Check the option selected in the menu
 
-		# Atualiza o PHP
-		if [ "$OPTION" -eq 1 ]; then
-			update_php
-			
-			leave_or_continue
+	# Atualiza o PHP
+	if [ "$OPTION_MENU" = '1' ]; then
+		update_php
+		
+	# Instal SSL no Painel VestaCP
+	elif [ "$OPTION_MENU" -eq 2 ]; then
+		install_ssl_to_panel
+		
 
-		# Instal SSL no Painel VestaCP
-		elif [ "$OPTION" -eq 2 ]; then
-			install_ssl_to_panel
-			
-			leave_or_continue
-
-		# Ativacao do FileManager
-		elif [ "$OPTION" -eq 3 ]; then
-			activate_filemanager
-			
-			leave_or_continue
-
-		# Instalando Templates para o VestaCP
-		elif [ "$OPTION" -eq 4 ]; then
-			install_templates
-			
-			leave_or_continue
-
-		# Corrigindo phpMyAdmin para o VestaCP
-		elif [ "$OPTION" -eq 5 ]; then
-			phpMyAdmin_Fixer
-			
-			leave_or_continue
-
-		# Todas as opções
-		elif [ "$OPTION" -eq 6 ]; then
-			update_php
-			install_ssl_to_panel
-			activate_filemanager
-			install_templates
-			
-			leave_or_continue
-
-		# Fecha a aplicação
-		elif [ "$OPTION" -eq 0 ]; then
-			finalize
-		else
-			clear && echo "Invalid option" && sleep 0.5 && clear
-			setup
-		fi
+	# Ativacao do FileManager
+	elif [ "$OPTION_MENU" -eq 3 ]; then
+		activate_filemanager
+		
+	# Instalando Templates para o VestaCP
+	elif [ "$OPTION_MENU" -eq 4 ]; then
+		install_templates
+		
+	# Corrigindo phpMyAdmin para o VestaCP
+	elif [ "$OPTION_MENU" -eq 5 ]; then
+		phpMyAdmin_Fixer
+		
+	# Install WordPress
+	elif [ "$OPTION_MENU" -eq 6 ]; then
+		install_wordpress
+		
+	# All
+	elif [ "$OPTION_MENU" -eq 'A' ]; then
+		update_php
+		install_ssl_to_panel
+		activate_filemanager
+		install_templates
+		
+	elif [ "$OPTION_MENU" -eq 0 ]; then
+		finalize
 	else
-		clear && echo "Invalid option" && sleep 0.5 && clear
+		echo "Invalid option" && sleep 2 && clear
 		setup
 	fi
+
 }
 
 
@@ -364,22 +352,15 @@ options(){
 ### Exit or continue
 #####################################################
 leave_or_continue(){
-	### Limpando o Terminal
-	sleep 2
-	clear
-	### Escrevendo menu na tela
-	echo -p 'Do you really want to exit? [y:Yes/n:No]: (y)' OPTION
+	read -p 'Do you really want to exit? [y:Yes/n:No]: (y)' OPTION_LEAVE
 
-	if [[ -n "$OPTION" ]]; then
-		if [ "$OPTION" -eq 'n' ]; then
-			setup
-		elif [ "$OPTION" -eq 'y' ]; then
-			# Fecha aplicação
-			finalize
-		else			
-			leave_or_continue
-		fi
-	fi
+	if [ "$OPTION_LEAVE" -eq 'n' ]; then
+		setup
+	elif [ "$OPTION_LEAVE" -eq 'y' ]; then
+		finalize
+	else			
+		leave_or_continue
+	fi	
 }
 
 
