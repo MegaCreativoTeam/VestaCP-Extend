@@ -1,4 +1,4 @@
-<img src="https://github.com/megacreativo/VestaCP-Extend/master/branding/logo.png" width="700" height="100"/>
+<img src="https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/master/branding/logo.png" width="700" height="100"/>
 
 # 👋 Welcome to VestaCP Extend Tools
 
