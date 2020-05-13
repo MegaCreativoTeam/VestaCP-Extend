@@ -93,9 +93,6 @@ welcome(){
     h1 "| |  | | |_| | | |_| |_____|  __/|  _  |  __/  "
     h1 "|_|  |_|\__,_|_|\__|_|     |_|   |_| |_|_|     "
     echo ""
-	echo "VestaCP functionality extension"
-    echo "Copyright © 2020. Powered By Mega Creativo <http://megacreativo.com>"
-    echo ""
 }
 
 pre_install(){
@@ -122,7 +119,7 @@ install_php_56() {
     # rm -f /etc/php/5.6/fpm/pool.d/*
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-56.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-56.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-56.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-56.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-56.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-56.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-56.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-56.sh
     
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-56.sh
     
@@ -143,7 +140,7 @@ install_php_70() {
 
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-70.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-70.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-70.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-70.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-70.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-70.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-70.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-70.sh
     
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-70.sh
     
@@ -167,7 +164,7 @@ install_php_71() {
     # rm -f /etc/php/7.1/fpm/pool.d/*
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-71.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-71.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-71.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-71.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-71.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-71.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-71.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-71.sh
     
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-71.sh
     
@@ -192,7 +189,7 @@ install_php_72() {
 
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-72.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-72.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-72.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-72.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-72.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-72.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-72.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-72.sh
     
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-72.sh
     
@@ -217,11 +214,11 @@ install_php_73(){
 
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-73.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-73.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-73.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-73.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73.sh
     
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-73-public.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73-public.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-73-public.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73-public.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-73-public.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73-public.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-73-public.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73-public.sh
     
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73.sh
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-73-public.sh
@@ -242,11 +239,11 @@ install_php_74(){
     cp -r /etc/php/7.4/ /root/vst_install_backups/php7.4/
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-74.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-74.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-74.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-74.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74.sh
     
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-74-public.stpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74-public.stpl
     wget -nv -q "$REPO/includes/apache2/PHP-FPM-74-public.tpl" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74-public.tpl
-    wget -nv -q "$REPO/installers/php/PHP-FPM-74-public.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74-public.sh
+    wget -nv -q "$REPO/includes/apache2/PHP-FPM-74-public.sh" -O /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74-public.sh
     
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74.sh
     chmod a+x /usr/local/vesta/data/templates/web/apache2/PHP-FPM-74-public.sh

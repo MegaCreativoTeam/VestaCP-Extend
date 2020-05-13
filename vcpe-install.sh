@@ -31,6 +31,10 @@ INSTALLER_VERSION="1.0.0"
 INSTALLER_NAME="VestaCP-Extend-$INSTALLER_VERSION"
 INSTALLER_LARGENAME="VCP-Extends v$INSTALLER_VERSION | VestaCP Extends Tools"
 
+REPO_VERSION="master"
+REPO="https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/$REPO_VERSION"
+
+
 h1() {
     echo "\e[1m\e[34m$1\e[0m"
 }
@@ -90,7 +94,7 @@ menu(){
 	echo " 4) Installs Templates for Laravel, ReactJS and HTTPS"
 	#echo " 5) Fix config and storage in phpMyAdmin"
 	echo " 6) Install WordPress"
-	
+	echo " 7) Installs Multi-PHP"
 	echo ""
 	echo " 0) Exit"
 
@@ -300,6 +304,13 @@ install_wordpress(){
 }
 
 
+install_multiphp(){
+	wget -nv -q "$REPO/installers/php/multi-php-install.sh" -O /usr/local/vesta/installers/php/multi-php-install.sh
+	chmod a+x /usr/local/vesta/installers/php/multi-php-install.sh
+	
+}
+
+
 #####################################################
 ### Options
 #####################################################
@@ -330,7 +341,11 @@ options(){
 	# Install WordPress
 	elif [ "$OPTION_MENU" -eq 6 ]; then
 		install_wordpress
-		
+
+	# Install WordPress
+	elif [ "$OPTION_MENU" -eq 7 ]; then
+		install_multiphp
+
 	# All
 	elif [ "$OPTION_MENU" -eq 'A' ]; then
 		update_php
