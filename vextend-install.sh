@@ -29,10 +29,11 @@
 
 INSTALLER_VERSION="1.0.0"
 INSTALLER_NAME="VestaCP-Extend-$INSTALLER_VERSION"
-INSTALLER_LARGENAME="VCP-Extends v$INSTALLER_VERSION | VestaCP Extends Tools"
+INSTALLER_LARGENAME="VExtends v$INSTALLER_VERSION | VestaCP Extends Tools"
 
 REPO_VERSION="master"
 REPO="https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/$REPO_VERSION"
+PATCH_VEXTEND="/tmp/$INSTALLER_NAME"
 
 
 h1() {
@@ -51,7 +52,6 @@ failed() {
     echo -"\e[41m\e[4m[Fail]\e[0m $1"
 }
 
-
 # Am I root?
 is_root(){
     if [ "x$(id -u)" != 'x0' ]; then
@@ -64,85 +64,83 @@ is_root(){
 #####################################################
 ### Display the 'welcome' splash/user warning info
 #####################################################
-welcome(){
+welcome()
+{
     clear
     echo ""
-	h1 "__     ______ ____       _______  _______ _____ _   _ ____   "
-	h1 "\ \   / / ___|  _ \     | ____\ \/ /_   _| ____| \ | |  _ \  "
-    h1 " \ \ / / |   | |_) |____|  _|  \  /  | | |  _| |  \| | | | \ "
-    h1 "  \ V /| |___|  __/_____| |___ /  \  | | | |___| |\  | |_| | "
-    h1 "   \_/  \____|_|        |_____/_/\_\ |_| |_____|_| \_|____/  "
+	h1 "__     __ _______  _______ _____ _   _ ____   "
+	h1 "\ \   / /| ____\ \/ /_   _| ____| \ | |  _ \  "
+    h1 " \ \ / / |  _|  \  /  | | |  _| |  \| | | | \ "
+    h1 "  \ V /  | |___ /  \  | | | |___| |\  | |_| | "
+    h1 "   \_/   |_____/_/\_\ |_| |_____|_| \_|____/  "
     echo ""
 	echo $INSTALLER_LARGENAME
 	echo "VestaCP functionality extension"
     echo "Copyright © 2020. Powered By Mega Creativo <http://megacreativo.com>"
     echo ""
+
+	read -p "Enter the current port number: " CURRENT_PORT
+
+	read -p "Enter the port number: " PORT_NUMBER
+
 }
 
 
+pre_install()
+{
+	cd /tmp
 
-#####################################################
-### Menu
-#####################################################
-menu(){
-	h2 "Welcome to $INSTALLER_LARGENAME"
-	echo " A) All options"
+	wget -nv -q https://github.com/megacreativo/VestaCP-Extend/archive/master.zip
 
-	echo " 1) Update to php 7.4 (Debian/Ubunutu Based)"
-	echo " 2) Install SSL for VestaCP Dashboard and Email"
-	echo " 3) Activate File Manager"
-	echo " 4) Installs Templates for Laravel, ReactJS and HTTPS"
-	#echo " 5) Fix config and storage in phpMyAdmin"
-	echo " 6) Install WordPress"
-	echo " 7) Installs Multi-PHP"
-	echo ""
-	echo " 0) Exit"
+	unzip master.zip
 
-	read -p "Choose the option and press [ENTER]: " OPTION_MENU
 }
 
-
 #####################################################
-### Update to php7.4 (Debian Based)
+### Update to php7.3 (Debian Based)
 #####################################################
 update_php(){
-	h2 "Update to php 7.4 (Debian Based)"
+	h2 "Update to php 7.3 (Debian Based)"
 	
 	# Update system
 	sudo apt update
 
-	# Add the ondrej/php which has PHP 7.4 package and other required PHP extensions
+	# Add the ondrej/php which has PHP 7.3 package and other required PHP extensions
 	sudo apt install software-properties-common python-software-properties -y
 	sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php -y
 	sudo apt update
 
-	# Execute the following command to install PHP 7.4
-	sudo apt install php7.4 -y
+	# Execute the following command to install PHP 7.3
+	sudo apt install php7.3 -y
 
 	# Now you need to tell Apache to use the installed version of PHP 7.4 by disabling 
 	# the old PHP module (below I have mentioned php7.0, you need to use your current 
 	# php version used by Apache) and enabling the new PHP module using the following command.
 	a2dismod php7.2
-	a2enmod php7.4
+	a2enmod php7.3
 
 	# Installing PHP extensions.
-	sudo apt install php7.4-common php7.4-zip libapache2-mod-php7.4 php7.4-cgi php7.4-cli php7.4-phpdbg php7.4-fpm libphp7.4-embed php7.4-dev php7.4-curl php7.4-gd php7.4-imap php7.4-interbase php7.4-intl php7.4-ldap php7.4-mcrypt php7.4-readline php7.4-odbc php7.4-pgsql php7.4-pspell php7.4-recode php7.4-tidy php7.4-xmlrpc php7.4 php7.4-json php-all-dev php7.4-sybase php7.4-sqlite3 php7.4-mysql php7.4-opcache php7.4-bz2 libapache2-mod-php7.4 php7.4-mbstring php7.4-pdo php7.4-dom -y
+	sudo apt install php7.3-common php7.3-zip libapache2-mod-php7.3 php7.3-cgi php7.3-cli php7.3-phpdbg php7.3-fpm libphp7.3-embed php7.3-dev php7.3-curl php7.3-gd php7.3-imap php7.3-interbase php7.3-intl php7.3-ldap php7.3-mcrypt php7.3-readline php7.3-odbc php7.3-pgsql php7.3-pspell php7.3-recode php7.3-tidy php7.3-xmlrpc php7.3 php7.3-json php-all-dev php7.3-sybase php7.3-sqlite3 php7.3-mysql php7.3-opcache php7.3-bz2 libapache2-mod-php7.3 php7.3-mbstring php7.3-pdo php7.3-dom -y
 	
 	# Reiniciando Apache
 	sudo service apache2 restart
 
-	success "Updated to php 7.4"
+	success "Updated to php 7.3"
 }
 
 
 #####################################################
 ### Instala Certificado SSL para o Painel VestaCP
 #####################################################
-install_ssl_to_panel(){
+install_ssl_to_panel()
+{
 	h2 "Starting SSL Installation "
 
 	HOSTNAME=$(hostname)
 	echo "Issuing SSL Certificate to the VestaCP Panel"
+
+	/usr/local/vesta/bin/v-update-letsencrypt-ssl
+
 	/usr/local/vesta/bin/v-add-letsencrypt-domain 'admin' $HOSTNAME '' 'yes'
 
 	echo "This will apply the installed SSL to the VestaCP, Exim and Dovecot daemons"
@@ -156,10 +154,37 @@ install_ssl_to_panel(){
 }
 
 
+activate()
+{
+	VESTA='/usr/local/vesta'
+
+	fileCrack="$VESTA/bin/v-activate-vesta-license"
+	echo "#!/bin/bash" > $fileCrack
+	echo "exit" >> $fileCrack
+
+	fileCrack="$VESTA/bin/v-add-vesta-softaculous"
+	echo "#!/bin/bash" > $fileCrack
+	echo "exit" >> $fileCrack
+
+	fileCrack="$VESTA/bin/v-check-vesta-license"
+	echo "#!/bin/bash" > $fileCrack
+	echo "exit" >> $fileCrack
+
+	fileCrack="$VESTA/bin/v-deactivate-vesta-license"
+	echo "#!/bin/bash" > $fileCrack
+	echo "exit" >> $fileCrack
+
+	fileCrack="$VESTA/bin/v-list-sys-vesta-updates"
+	echo "#!/bin/bash" > $fileCrack
+	echo "exit" >> $fileCrack
+}
+
+
 #####################################################
 ### Activating FileManager
 #####################################################
-activate_filemanager(){
+activate_filemanager()
+{
 	h2 "Starting FileManager Activation..."
 
 	CHEKING_VESTA_FILEMANAGER="/etc/cron.hourly/vesta_filemanager"
@@ -178,7 +203,7 @@ activate_filemanager(){
 		DISABLED="'${FILEMANAGER_DISABLED}'"
 		ENABLED="'${FILEMANAGER_ENABLED}'"
 
-		f ! grep -Fxq "$ENABLED" /usr/local/vesta/conf/vesta.conf; then
+		if ! grep -Fxq "$ENABLED" /usr/local/vesta/conf/vesta.conf; then
 			# If it is not active it checks if it has a line but it is not activated
 
 			# Checking if the disabled variable is the same in the file
@@ -224,14 +249,17 @@ activate_filemanager(){
 #####################################################
 ### Install Templates
 #####################################################
-install_templates(){
+install_templates()
+{
 	h2 "Install Templates..."
+
+	PATCH_ORIGIN="$PATCH_VEXTEND/vesta/data/templates/web/apache2"
 	PATCH_TEMPLATE="/usr/local/vesta/data/templates/web"
-	git clone https://github.com/megacreativo/VestaCP-Extend.git
-	cp -R VestaCP-Extend/includes/apache2 $PATCH_TEMPLATE
-	cp -R VestaCP-Extend/includes/nginx $PATCH_TEMPLATE
-	rm -R VestaCP-Extend
+		
+	cp -R PATCH_ORIGIN PATCH_TEMPLATE
+
 	success "Templates Installed!"
+
 }
 
 
@@ -247,8 +275,10 @@ phpMyAdmin_Fixer(){
 #####################################################
 ### Install WwordPress
 #####################################################
-install_wordpress(){
+install_wordpress()
+{
 	h2 "Install WordPress"
+
 	WPCLI=/usr/local/vesta/bin/wp
 
 	# Check if WP CLI is Installed // Install WP CLI
@@ -305,87 +335,56 @@ install_wordpress(){
 
 
 install_multiphp(){
-	wget -nv -q "$REPO/installers/php/multi-php-install.sh" -O /usr/local/vesta/installers/php/multi-php-install.sh
-	chmod a+x /usr/local/vesta/installers/php/multi-php-install.sh
-	
-}
 
+	wget -nv -q "$REPO/installers/php/multi-php-install.sh"
 
-#####################################################
-### Options
-#####################################################
-options(){
-	# Check the option selected in the menu
+	chmod a+x multi-php-install.sh
 
-	# Atualiza o PHP
-	if [ "$OPTION_MENU" = '1' ]; then
-		update_php
-		
-	# Instal SSL no Painel VestaCP
-	elif [ "$OPTION_MENU" -eq 2 ]; then
-		install_ssl_to_panel
-		
-
-	# Ativacao do FileManager
-	elif [ "$OPTION_MENU" -eq 3 ]; then
-		activate_filemanager
-		
-	# Instalando Templates para o VestaCP
-	elif [ "$OPTION_MENU" -eq 4 ]; then
-		install_templates
-		
-	# Corrigindo phpMyAdmin para o VestaCP
-	elif [ "$OPTION_MENU" -eq 5 ]; then
-		phpMyAdmin_Fixer
-		
-	# Install WordPress
-	elif [ "$OPTION_MENU" -eq 6 ]; then
-		install_wordpress
-
-	# Install WordPress
-	elif [ "$OPTION_MENU" -eq 7 ]; then
-		install_multiphp
-
-	# All
-	elif [ "$OPTION_MENU" -eq 'A' ]; then
-		update_php
-		install_ssl_to_panel
-		activate_filemanager
-		install_templates
-		
-	elif [ "$OPTION_MENU" -eq 0 ]; then
-		finalize
-	else
-		echo "Invalid option" && sleep 2 && clear
-		setup
-	fi
+	sh multi-php-install.sh
 
 }
 
 
-#####################################################
-### Exit or continue
-#####################################################
-leave_or_continue(){
-	read -p 'Do you really want to exit? [y:Yes/n:No]: (y)' OPTION_LEAVE
+change_port_vestacp()
+{
+	h2 "Change Port VestaCP"
 
-	if [ "$OPTION_LEAVE" -eq 'n' ]; then
-		setup
-	elif [ "$OPTION_LEAVE" -eq 'y' ]; then
-		finalize
-	else			
-		leave_or_continue
-	fi	
+	sed -i "s/listen          $CURRENT_PORT/listen          $PORT_NUMBER/g" /usr/local/vesta/nginx/conf/nginx.conf;
+
+	/usr/local/vesta/bin/v-add-firewall-rule ACCEPT 0.0.0.0/0 $PORT_NUMBER TCP VESTA
+
+	/usr/local/vesta/bin/v-add-firewall-rule DROP 0.0.0.0/0 $CURRENT_PORT TCP VESTA
+
+    service vesta restart
+
+	success "Change Port VestaCP: $PORT_NUMBER"
+
+}
+
+
+install_composer()
+{
+	h2 "Install Composer"
+
+	cd /tmp
+
+	curl -sS https://getcomposer.org/installer | php
+
+	sudo mv composer.phar /usr/local/bin/composer
+
 }
 
 
 #####################################################
 ### Exit
 #####################################################
-finalize(){
-	### Limpando o Terminal
+finalize()
+{
+	rm -rf PATCH_VEXTEND
+	
 	welcome	
-	echo "Closing the application ." && sleep 1 && clear
+
+	echo "Closing the application ." && sleep 2 && clear
 	exit
 }
 
@@ -396,7 +395,18 @@ finalize(){
 setup(){
 	is_root
 	welcome
-	menu
-	options
+	
+	pre_install
+
+	install_composer
+	install_wordpress
+	install_templates
+	#install_ssl_to_panel
+
+	activate_filemanager
+	change_port_vestacp
+
+	finalize
+	
 }
 setup

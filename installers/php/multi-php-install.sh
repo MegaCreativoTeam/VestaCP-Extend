@@ -109,6 +109,8 @@ pre_install(){
 }
 
 install_php_56() {
+    h2 "Installing PHP 5.6..."
+
     apt -y install php5.6-mbstring php5.6-bcmath php5.6-cli php5.6-curl php5.6-fpm php5.6-gd php5.6-intl php5.6-mcrypt php5.6-mysql php5.6-soap php5.6-xml php5.6-zip php5.6-memcache php5.6-memcached
     update-rc.d php5.6-fpm defaults
     a2enconf php5.6-fpm
@@ -127,9 +129,13 @@ install_php_56() {
     wget -nv -q "$REPO/resources/patches/php5.6.patch" -O /root/vesta-temp-dl/vesta/patch/php5.6.patch
     patch -p1 --directory=/ </root/vesta-temp-dl/vesta/patch/php5.6.patch
     rm -rf /root/vesta-temp-dl
+
+    success "PHP 5.6 success"
 }
 
 install_php_70() {
+    h2 "Installing PHP 7.0..."
+
     apt -y install php7.0-mbstring php7.0-bcmath php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-mcrypt php7.0-mysql php7.0-soap php7.0-xml php7.0-zip php7.0-memcache php7.0-memcached
     update-rc.d php7.0-fpm defaults
     a2enconf php7.0-fpm
@@ -152,9 +158,13 @@ install_php_70() {
             cp /etc/php/7.3/fpm/php.ini /etc/php/7.0/fpm/php.ini
         fi
     fi
+    success "PHP 7.0 success"
+
 }
 
 install_php_71() {
+    h2 "Installing PHP 7.1..."
+
     apt -y install php7.1-mbstring php7.1-bcmath php7.1-cli php7.1-curl php7.1-fpm php7.1-gd php7.1-intl php7.1-mcrypt php7.1-mysql php7.1-soap php7.1-xml php7.1-zip php7.1-memcache php7.1-memcached
     update-rc.d php7.1-fpm defaults
     a2enconf php7.1-fpm
@@ -176,9 +186,13 @@ install_php_71() {
             cp /etc/php/7.3/fpm/php.ini /etc/php/7.1/fpm/php.ini
         fi
     fi
+
+    success "PHP 7.1 success"
 }
 
 install_php_72() {
+    h2 "Installing PHP 7.2..."
+
     apt -y install php7.2-mbstring php7.2-bcmath php7.2-cli php7.2-curl php7.2-fpm php7.2-gd php7.2-intl php7.2-mysql php7.2-soap php7.2-xml php7.2-zip php7.2-memcache php7.2-memcached
     update-rc.d php7.2-fpm defaults
     a2enconf php7.2-fpm
@@ -201,9 +215,14 @@ install_php_72() {
             cp /etc/php/7.3/fpm/php.ini /etc/php/7.2/fpm/php.ini
         fi
     fi
+
+    success "PHP 7.2 success"
 }
 
 install_php_73(){
+
+    h2 "Installing PHP 7.3..."
+
     apt -y install php7.3-mbstring php7.3-bcmath php7.3-cli php7.3-curl php7.3-fpm php7.3-gd php7.3-intl php7.3-mysql php7.3-soap php7.3-xml php7.3-zip php7.3-memcache php7.3-memcached
     update-rc.d php7.3-fpm defaults
     a2enconf php7.3-fpm
@@ -228,9 +247,13 @@ install_php_73(){
             cp /etc/php/7.0/apache2/php.ini /etc/php/7.3/fpm/php.ini
         fi
     fi
+
+    success "PHP 7.3 success"
 }
 
 install_php_74(){ 
+    h2 "Installing PHP 7.4..."
+
     apt -y install php7.4-mbstring php7.4-bcmath php7.4-cli php7.4-curl php7.4-fpm php7.4-gd php7.4-intl php7.4-mysql php7.4-soap php7.4-xml php7.4-zip php7.4-memcache php7.4-memcached
     update-rc.d php7.4-fpm defaults
     a2enconf php7.4-fpm
@@ -256,9 +279,13 @@ install_php_74(){
             cp /etc/php/7.3/fpm/php.ini /etc/php/7.4/fpm/php.ini
         fi
     fi
+
+    success "PHP 7.4 success"
 }
 
 finalize(){
+    h2 "Finishing installation"
+
     apt update
     apt upgrade -y
 
@@ -277,6 +304,9 @@ finalize(){
             service apache2 restart
         fi
     fi
+
+    success "MultiPHP Successfully Installed"
+   
 }
 
 setup(){

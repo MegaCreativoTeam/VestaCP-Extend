@@ -28,7 +28,7 @@ This script was created to make life easier for those who work with **VestaCP** 
 ## 🔧 Installing
 
 ```sh
-wget https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/master/vcpe-install.sh && sh vcpe-install.sh
+wget https://raw.githubusercontent.com/megacreativo/VestaCP-Extend/master/vextend-install.sh && sh vextend-install.sh
 ```
 
 ## 🤝 Contributing
