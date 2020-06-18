@@ -81,16 +81,16 @@ if (!empty($_POST['ok'])) {
         
         exec (VESTA_CMD."v-install-wordpress ".$user." ".$domain." ".$path." ".$admin_user." ".$admin_passwd." ".$admin_email." ".$blog_title." ".$fname." ".$lname." ".$https." ".$www." ".$blog_url, $output, $return_var);
        
-        /*echo "<pre>"; 
+        $ok_message = "<pre>"; 
             if ($ret == 0) {                // check status code. if successful 
                 foreach ($output as $line) {  // process array line by line 
-                    echo "$line \n"; 
+                    $ok_message .= "$line \n"; 
                 } 
             } else { 
-                echo "Error in command";    // if unsuccessful display error 
+                $ok_message .= "Error in command";    // if unsuccessful display error 
             } 
-            echo $ok_message;
-        echo "</pre>"; */
+
+        $ok_message .= "</pre>";
 
         check_return_code($return_var,$output);
         unset($output);
@@ -98,11 +98,11 @@ if (!empty($_POST['ok'])) {
 
         if ($_POST['v_www'] == 'www') {
             $blog_url = "{$_POST['v_http']}://www.{$_POST['v_domain']}{$_POST['v_path']}";
-            $ok_message = "WordPress installed success. <a href=\"{$blog_url}\" target=\"blank\"> Visit</a>";
+            $ok_message .= "WordPress installed success. <a href=\"{$blog_url}\" target=\"blank\"> Visit</a>";
         }
         else {            
             $blog_url = "{$_POST['v_http']}://{$_POST['v_domain']}{$_POST['v_path']}";
-            $ok_message = "WordPress installed success. <a href=\"{$blog_url}\" target=\"blank\"> Visit</a>";
+            $ok_message .= "WordPress installed success. <a href=\"{$blog_url}\" target=\"blank\"> Visit</a>";
         }
         
         $wp_install_logs = '<div class"card">';
@@ -120,17 +120,17 @@ if (!empty($_POST['ok'])) {
 
     }
 
-/* This module currently not required because WP-CLI installation send confirmation email but without password.
-    // Email login credentials
-    if ((!empty($send_email)) && (empty($_SESSION['error_msg']))) {
-        $to = $send_email;
-        $subject = __("WordPress Installed Details");
-        $hostname = exec('hostname');
-        $from = __('MAIL_FROM',$hostname);
-        $mailtext = __('DATABASE_READY',$user."_".$_POST['v_admin_user'],$user."_".$_POST['v_admin_user'],$_POST['v_admin_passwd'],$blog_url);
-        send_email($to, $subject, $mailtext, $from);
-    }
-*/
+    /* This module currently not required because WP-CLI installation send confirmation email but without password.
+        // Email login credentials
+        if ((!empty($send_email)) && (empty($_SESSION['error_msg']))) {
+            $to = $send_email;
+            $subject = __("WordPress Installed Details");
+            $hostname = exec('hostname');
+            $from = __('MAIL_FROM',$hostname);
+            $mailtext = __('DATABASE_READY',$user."_".$_POST['v_admin_user'],$user."_".$_POST['v_admin_user'],$_POST['v_admin_passwd'],$blog_url);
+            send_email($to, $subject, $mailtext, $from);
+        }
+    */
 
     // Flush field values on success
     if (empty($_SESSION['error_msg'])) {
@@ -148,7 +148,7 @@ $data = array_reverse($data,true);
 
 
 // Render page
-render_page($user, $TAB, 'install_wp');
+render_page($user, $TAB, 'installer_wordpress');
 
 // Flush session messages
 unset($_SESSION['error_msg']);

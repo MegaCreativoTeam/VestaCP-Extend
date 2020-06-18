@@ -64,10 +64,10 @@
 
                         <tr>
                             <td class="vst-text input-label">
-                                <?php print __('Installation Path');
-
+                                <?php 
+                                    print __('Installation Path');
                                     echo "&nbsp;&nbsp;<em><small>(".__('Enter Path for Wordpress Installation. Default it will install in root directory', 16).")</small></em>";
-                                    ?>
+                                ?>
                             </td>
                         </tr>
                         <tr>
@@ -79,15 +79,14 @@
                         <tr>
                             <td class="vst-text input-label">
                                 <?php
-                                        print __('Wordpress Admin Username');
-                                        echo "&nbsp;&nbsp;<em><small>(".__('autogenrated username is recommended', 16).")</small></em>";
-                                    ?>
+                                    print __('Wordpress Admin Username');
+                                    echo "&nbsp;&nbsp;<em><small>(".__('autogenrated username is recommended', 16).")</small></em>";
+                                ?>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" size="20" class="vst-input" name="v_admin_user"
-                                    value="<?php echo "adminx".$user ;?>">
+                                <input type="text" size="20" class="vst-input" name="v_admin_user" value="">
                                 <small class="hint"></small>
                             </td>
                         </tr>
@@ -162,8 +161,8 @@
                         <tr>
                             <td>
                                 <select class="vst-list" name="v_http">
-                                    <option value="http" selected>HTTP</option>
-                                    <option value="https">HTTPS</option>
+                                    <option value="http" selected>http</option>
+                                    <option value="https">https</option>
                                 </select>
                             </td>
                         <tr>
@@ -175,8 +174,8 @@
                         <tr>
                             <td>
                                 <select class="vst-list" name="v_www">
-                                    <option value="www" selected>WWW</option>
-                                    <option value="">non-WWW</option>
+                                    <option value="www" selected>www</option>
+                                    <option value="">non-www</option>
                                 </select>
                             </td>
                         <tr>
