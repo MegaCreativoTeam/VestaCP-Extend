@@ -33,6 +33,7 @@
 #
 # The function will install latest wordpress blog.
 
+echo '1'
 
 h1() {
     echo "\e[1m\e[34m$1\e[0m"
@@ -58,9 +59,11 @@ failed() {
 user=$1
 domain=$2
 path=$3
+
 admin_user=$4
 admin_passwd=$5
 admin_email=$6
+
 blog_title=$7
 fname=$8
 lname=$9
@@ -174,13 +177,13 @@ sudo -H -u $user $wp core install --url="$blog_url" --title="$blog_title" --admi
 sudo -H -u $user $wp user update "$admin_user" --first_name="$fname" --last_name="$lname" --display_name="Admin"
 sudo -H -u $user $wp plugin delete hello
 sudo -H -u $user $wp theme delete twentyseventeen twentysixteen
-#sudo -H -u $user $wp rewrite structure '/%category%/%postname%/'
+sudo -H -u $user $wp rewrite structure '/%category%/%postname%/'
 #sudo -H -u $user $wp option update timezone_string "Asia/Kolkata"
-#sudo -H -u $user $wp option update blogdescription ""
+sudo -H -u $user $wp option update blogdescription ""
 sudo -H -u $user $wp plugin install edit-author-slug classic-editor --activate
 #sudo -H -u $user $wp option update wordpress_api_key "b306c1b3ccd3"
-#sudo -H -u $user $wp post delete 1
-#sudo -H -u $user $wp post delete $(wp post list --post_type='page' --format=ids)
+sudo -H -u $user $wp post delete 1
+sudo -H -u $user $wp post delete $(wp post list --post_type='page' --format=ids)
 
 clear
 echo "##############################################"
